@@ -95,6 +95,16 @@ def case_details(casenumber:str,db:Session=Depends(get_db)):
         raise HTTPException(status_code=404, detail="Case not found")
 
     return case
+
+# From hearing to case access
+@router.get('/case-from-hearing',response_model=CaseRes)
+def case_from_hearing(case_id,db:Session=Depends(get_db)):
+    data=select(Case).where(Case.id==case_id)
+    case=db.scalars(data).first()
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+
+    return case
     
 # Adding hearing details and modifying on Case Table
 @router.post('/add-hearing')
