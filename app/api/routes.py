@@ -116,12 +116,10 @@ def add_hearing(info:HearingDet,db:Session=Depends(get_db)):
     db.commit()
     return {'message':"updated successfully"}
 
-# exposing hearing details sorted by sooner hearing dates
-# Here Hearing changed-> Case Table
 @router.get('/get-hearings',response_model=List[HearingRes])
 def get_hearings(db:Session=Depends(get_db)):
-    data=select(Case).order_by(asc(Case.next_hearing_date))
-    datas=db.scalars(data).all()
+    data = select(Hearing).order_by(asc(Hearing.hearing_date))
+    datas = db.scalars(data).all()
     return datas
 
 # exposing hearing details sorted by asc filter by client
